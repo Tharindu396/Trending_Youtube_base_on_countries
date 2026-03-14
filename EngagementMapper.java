@@ -1,28 +1,40 @@
 import java.io.IOException;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
-public class EngagementMapper extends Mapper<LongWritable, Text, Text, FloatWritable> {
+public class EngagementMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
+
+    private Text country = new Text();
 
     public void map(LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
 
         String line = value.toString();
+
+        if (line.contains("video_id")) return;
+
         String[] fields = line.split(",");
 
         try {
 
-            float views = Float.parseFloat(fields[7]);
-            float likes = Float.parseFloat(fields[8]);
+            double views = Double.parseDouble(fields[7]);
+            double likes = Double.parseDouble(fields[8]);
 
-            if (views > 0) {
+            if (views == 0) return;
 
-                float engagementRate = likes / views;
+            double engagement = likes / views;
 
-                context.write(new Text("engagement"), new FloatWritable(engagementRate));
-            }
+            FileSplit fileSplit = (FileSplit) context.getInputSplit();
+            String fileName = fileSplit.getPath().getName();
 
-        } catch (Exception e) {
-        }
+            String countryCode = fileName.substring(0,2);
+
+            country.set(countryCode);
+
+            context.write(country, new DoubleWritable(engagement));
+
+        } catch(Exception e) {}
+
     }
 }

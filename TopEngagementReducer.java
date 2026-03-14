@@ -5,30 +5,51 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 public class TopEngagementReducer extends Reducer<Text, Text, Text, Text> {
 
+    class VideoScore {
+        String title;
+        float score;
+
+        VideoScore(String t, float s){
+            title=t;
+            score=s;
+        }
+    }
+
     public void reduce(Text key, Iterable<Text> values, Context context)
             throws IOException, InterruptedException {
 
-        List<String> videos = new ArrayList<>();
+        List<VideoScore> list = new ArrayList<>();
 
-        for (Text val : values) {
-            videos.add(val.toString());
+        for(Text val : values){
+
+            String v = val.toString();
+
+            if(!v.contains("|")) continue;
+
+            String[] parts = v.split("\\|");
+
+            if(parts.length != 2) continue;
+
+            try{
+
+                float score = Float.parseFloat(parts[1]);
+                list.add(new VideoScore(parts[0],score));
+
+            }catch(Exception e){
+                continue;
+            }
         }
 
-        Collections.sort(videos, new Comparator<String>() {
+        Collections.sort(list,(a,b)->Float.compare(b.score,a.score));
 
-            public int compare(String a, String b) {
+        int limit = Math.min(3,list.size());
 
-                float scoreA = Float.parseFloat(a.split("\\|")[1]);
-                float scoreB = Float.parseFloat(b.split("\\|")[1]);
+        for(int i=0;i<limit;i++){
 
-                return Float.compare(scoreB, scoreA);
-            }
-        });
+            VideoScore vs = list.get(i);
 
-        int limit = Math.min(10, videos.size());
-
-        for (int i = 0; i < limit; i++) {
-            context.write(key, new Text(videos.get(i)));
+            context.write(key,
+                    new Text((i+1)+". "+vs.title+" -> "+vs.score));
         }
     }
 }

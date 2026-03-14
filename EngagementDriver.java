@@ -10,7 +10,8 @@ public class EngagementDriver {
     public static void main(String[] args) throws Exception {
 
         Configuration conf = new Configuration();
-        Job job = Job.getInstance(conf, "YouTube Engagement");
+
+        Job job = Job.getInstance(conf, "Engagement By Country");
 
         job.setJarByClass(EngagementDriver.class);
 
@@ -18,10 +19,10 @@ public class EngagementDriver {
         job.setReducerClass(EngagementReducer.class);
 
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(FloatWritable.class);
+        job.setOutputValueClass(DoubleWritable.class);
 
         FileInputFormat.addInputPath(job, new Path("/youtube"));
-        FileOutputFormat.setOutputPath(job, new Path("/output_engagement"));
+        FileOutputFormat.setOutputPath(job, new Path("/output_engagement_country"));
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
