@@ -20,10 +20,11 @@ public class EngagementMapper extends Mapper<LongWritable, Text, Text, DoubleWri
 
             double views = Double.parseDouble(fields[7]);
             double likes = Double.parseDouble(fields[8]);
+            double comments = Double.parseDouble(fields[10]);
 
             if (views == 0) return;
 
-            double engagement = likes / views;
+            double engagement = (likes + comments) / views;
 
             FileSplit fileSplit = (FileSplit) context.getInputSplit();
             String fileName = fileSplit.getPath().getName();

@@ -22,7 +22,7 @@ public class TopEngagementDriver {
         job.setOutputValueClass(Text.class);
 
         FileInputFormat.addInputPath(job, new Path("/youtube"));
-        FileOutputFormat.setOutputPath(job, new Path("/output_top10"));
+        FileOutputFormat.setOutputPath(job, new Path("/output_top3"));
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }

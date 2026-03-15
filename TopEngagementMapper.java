@@ -21,14 +21,13 @@ public class TopEngagementMapper extends Mapper<LongWritable, Text, Text, Text> 
 
         String line = value.toString();
 
-        // Skip header
         if (line.startsWith("video_id")) {
             return;
         }
 
         String[] fields = line.split(",");
 
-        // Ensure enough columns
+
         if (fields.length < 11) return;
 
         try {
@@ -46,11 +45,11 @@ public class TopEngagementMapper extends Mapper<LongWritable, Text, Text, Text> 
 
             float views = Float.parseFloat(viewsStr);
             float likes = Float.parseFloat(likesStr);
-            float comments = Float.parseFloat(commentsStr);
+            float comments_count = Float.parseFloat(commentsStr);
 
             if (views == 0) return;
 
-            float engagement = (likes + comments) / views;
+            float engagement = (likes + comments_count) / views;
 
             context.write(new Text(country),
                     new Text(title + "|" + engagement));
