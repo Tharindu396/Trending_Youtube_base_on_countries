@@ -90,7 +90,7 @@ hadoop jar youtube.jar TopEngagementDriver
 hadoop jar youtube.jar CategoryPopularityDriver
 
 # View the output stored in HDFS
- hdfs dfs -cat /output_engagement_country/part-r-00000
+hdfs dfs -cat /output_engagement_country/part-r-00000
 hdfs dfs -cat /output_top3/part-r-00000
 hdfs dfs -cat /output_CategoryPopularity/part-r-00000
 ```
