@@ -61,7 +61,7 @@ The project utilizes the Hadoop MapReduce framework to process data in parallel:
 ### 1. Environment Setup
 
 - **Hadoop Version**: Ensure **Hadoop 3.x** is installed.
-  ![Hadoop Version Screenshot](D:\7th sem\Cloud\Outputs\Hadoop_local\Hadoop_version.png)
+  ![Hadoop Version Screenshot](Hadoop_version.png)
   \*(To get this, run: `hadoop version`)\_
 
 - **Start Services**: Run the startup scripts to initialize HDFS and YARN.
