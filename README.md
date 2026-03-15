@@ -62,7 +62,7 @@ The project utilizes the Hadoop MapReduce framework to process data in parallel:
 
 - **Hadoop Version**: Ensure **Hadoop 3.x** is installed.
   ![Hadoop Version Screenshot](Hadoop_version.png)
-  \*(To get this, run: `hadoop version`)\_
+  _(To get this, run: `hadoop version`)_
 
 - **Start Services**: Run the startup scripts to initialize HDFS and YARN.
   ```bash
